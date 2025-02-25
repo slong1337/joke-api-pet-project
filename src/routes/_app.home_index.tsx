@@ -1,0 +1,1 @@
+export {Home} from '@/scopes/App-Home/leaves/Home'
