@@ -1,6 +1,9 @@
+import { HomeFilters } from '@/scopes/App-Home/components/HomeFilters/HomeFilters'
+import { JokeCard } from '@/scopes/App-Home/components/JokeCard/JokeCard'
+
 export function Home() {
     return (
-        <div className=" ml-10 mt-4 ">
+        <div className="mx-6 my-4">
             <div className="flex rounded-xl">
                 <h1 className=" font-bold text-2xl max-w-2xl ">Добро пожаловать на наш сайт шуток!</h1>
             </div>
@@ -30,9 +33,13 @@ export function Home() {
                 </div>
             </div>
 
-            <p>Заглядывайте к нам, когда нужно поднять настроение, рассмешить друзей или просто поразвлечься. Смех продлевает жизнь — и мы с этим согласны!
-</p>
-            
+            <p>
+                Заглядывайте к нам, когда нужно поднять настроение, рассмешить друзей или просто поразвлечься. Смех продлевает жизнь — и мы с этим согласны!
+            </p>
+
+            <HomeFilters/>
+
+
         </div>
     )
 }
