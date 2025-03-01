@@ -1,5 +1,10 @@
+import { Outlet } from "@remix-run/react";
+
 export function App() {
     return (
-        <h1>Привет!</h1>
+        <div>
+            <h1 className=" text-4xl ">Joke.io</h1>
+            <Outlet/>
+        </div>
     )
 }

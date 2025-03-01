@@ -1,0 +1,1 @@
+export {Form as default} from '@/scopes/App-From/leaves/Form'
