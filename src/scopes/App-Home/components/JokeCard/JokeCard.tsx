@@ -13,7 +13,7 @@ export const JokeCard = (props: JokeCardProps ) => {
                 {data.type === 'single' ? (
                     <>{data.joke}</>
                 ) : (
-                    <></>
+                    <>- {data.setup} <br /> - {data.delivery}</>
                 )}
             </p>
         </div>

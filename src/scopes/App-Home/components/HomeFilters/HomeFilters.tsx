@@ -10,12 +10,15 @@ export const HomeFilters = () => {
         <>
             <div className="border rounded-xl px-4 py-2 mt-6">
                 <h1>Конфигуратор шутки</h1>
-                <div>
-                    <div>
 
+                <div>
+                    <div className="">
                         <div className="flex">
-                            <label htmlFor="category">Выберите категорию / категории:</label>
-                            <select id="category" multiple>
+                            <label id="category">Выберите категорию / категории:</label>
+
+                            <select id="category" >
+
+                                <option value="Misc">Без разницы</option>
 
                                 <option value="Programming">Программирование</option>
 
@@ -32,8 +35,10 @@ export const HomeFilters = () => {
                             </select>
 
                         </div>
+
                         <div className="flex">
-                            <label htmlFor="flags">Флаги для черного списка (опционально):</label>
+                            <label id="flags">Флаги для черного списка (опционально):</label>
+
                             <div id="flags" className="flex">
 
                                 <label><input type="checkbox" id="nsfw"/> NSFW</label><br/>
@@ -49,39 +54,44 @@ export const HomeFilters = () => {
                                 <label><input type="checkbox" id="explicit"/> Эксплицитные</label><br/>
 
                             </div>
+
                         </div>
 
                         <div className="flex">
-                            <label id="response-format">Выберите формат ответа:</label>
-                            <div>
-                                <label><input type="radio" name="response-format" id="json" checked/>JSON</label>
 
-                                <label><input type="radio" name="response-format" id="xml"/>xml</label>
+                            <label id='type-joke'>Выберите хотя бы один тип шутки:</label>
+                                <div>
 
-                                <label><input type="radio" name="response-format" id="yaml"/>yaml</label>
+                                    <label><input type="checkbox" id="single"/>одиночная</label>
 
-                                <label><input type="radio" name="response-format" id="text"/>plain text</label>
+                                    <label><input type="checkbox" id="twopart"/>двойная</label>
 
-                            </div>
+                                </div>
+
                         </div>
 
                         <div className="flex">
-                            <label htmlFor='type-joke'>Выберите хотя бы один тип шутки:</label>
-                            <div>
 
-                                <label><input type="checkbox" id="single"/>одиночная</label>
-
-                                <label><input type="checkbox" id="twopart"/>двойная</label>
-
-                            </div>
-                        </div>
-
-                        <div className="flex">
                             <label>Найдите шутку, которая содержит это слово:</label>
+
                             <input type="textarea" className="border"/>
+
                         </div>
 
-                        <label htmlFor="">Поиск шутки в этом диапазоне идентификаторов:</label>
+                        <div className="flex">
+
+                            <label id="">Поиск шутки в диапазоне</label>
+                            <p>От</p>
+                            <input type="number" className=" border " />
+                            <p>До</p>
+                            <input type="number" className=" border " />
+
+                        </div>
+
+                        <label id="">Количество шуток</label>
+                        <input type="number" min="1"/>
+
+                        
 
                     </div>
 
