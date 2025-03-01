@@ -1,10 +1,20 @@
-import { useFetcher } from "@remix-run/react"
-import { Joke } from '@/routes/api.joke'
+import { useLoaderData } from "@remix-run/react"
 import { JokeCard } from '@/scopes/App-Home/components/JokeCard/JokeCard'
+import useCriteria from '@/hooks/useCriteria'
+import clsx from 'clsx'
+import { clientLoader } from '@/scopes/App-Home/leaves/Home.loader'
 
 export const HomeFilters = () => {
-    const fetcher = useFetcher<Joke | undefined>()
-    const data = fetcher.data
+    const { setCriteria, resetCriteria, getCriteria } = useCriteria()
+    const data = useLoaderData<typeof clientLoader>()
+
+    const onTypeFilter = (value: string) => {
+        if (value === '') {
+            resetCriteria('type')
+        } else {
+            setCriteria('type', value)
+        }
+    }
 
     return (
         <>
@@ -57,16 +67,37 @@ export const HomeFilters = () => {
 
                         </div>
 
-                        <div className="flex">
+                        <div className="flex my-6 gap-x-4 items-center">
 
-                            <label id='type-joke'>Выберите хотя бы один тип шутки:</label>
-                                <div>
+                            <div>Выберите хотя бы один тип шутки:</div>
 
-                                    <label><input type="checkbox" id="single"/>одиночная</label>
+                            {/*todo:добавить стилизацию по примеру из singel*/}
+                            <button className="px-2 py-1 border rounded-lg hover:bg-gray-50 text-sm" onClick={() => onTypeFilter('')}>
+                                Все
+                            </button>
 
-                                    <label><input type="checkbox" id="twopart"/>двойная</label>
+                            <button
+                                className={clsx('px-2 py-1 border rounded-lg hover:bg-gray-50 text-sm', {
+                                    'border-blue-700 bg-blue-100 hover:bg-blue-200': getCriteria('type') === 'single'
+                                })}
+                                onClick={() => onTypeFilter('single')}
+                            >
+                                Одиночные
+                            </button>
 
-                                </div>
+                            <button
+                                onClick={() => onTypeFilter('twopart')}
+                                className={clsx('px-2 py-1 border rounded-lg hover:bg-gray-50 text-sm', {
+                                    'border-blue-700 bg-blue-100 hover:bg-blue-200': getCriteria('type') === 'twopart'
+                                })}
+                            >
+                                Двойные
+                            </button>
+
+                            {/*<label><input type="checkbox" id="single"/>одиночная</label>*/}
+
+                            {/*<label><input type="checkbox" id="twopart"/>двойная</label>*/}
+
 
                         </div>
 
@@ -95,8 +126,6 @@ export const HomeFilters = () => {
 
                     </div>
 
-                    <button className="px-4 py-2 text-lg border rounded-xl hover:bg-gray-100 mt-4 font-medium" onClick={() => fetcher.load('api/joke')}>Пошутить</button>
-                    <p className="mt-6">ID: {data?.id}</p>
                 </div>
             </div>
 
