@@ -19,49 +19,49 @@ export const HomeFilters = () => {
     return (
         <>
             <div className="border rounded-xl px-4 py-2 mt-6">
-                <h1>Конфигуратор шутки</h1>
+                <h1 className="text-3xl">Конфигуратор шутки</h1>
 
                 <div>
                     <div className="">
-                        <div className="flex">
+                        <div className="flex my-6 gap-x-4 items-center">
                             <label id="category">Выберите категорию / категории:</label>
 
-                            <select id="category" >
+                            <div id="category" >
 
-                                <option value="Misc">Без разницы</option>
+                                <button value="Misc" className="px-2 mx-2 border rounded-lg hover:bg-gray-50">Без разницы</button>
 
-                                <option value="Programming">Программирование</option>
+                                <button value="Programming" className="px-2 mx-2 border rounded-lg hover:bg-gray-50">Программирование</button>
 
-                                <option value="Misc">Разное</option>
+                                <button value="Misc" className="px-2 mx-2 border rounded-lg hover:bg-gray-50">Разное</button>
 
-                                <option value="Dark">Тёмный юмор</option>
+                                <button value="Dark" className="px-2 mx-2 border rounded-lg hover:bg-gray-50">Тёмный юмор</button>
 
-                                <option value="Pun">Игра слов</option>
+                                <button value="Pun" className="px-2 mx-2 border rounded-lg hover:bg-gray-50">Игра слов</button>
 
-                                <option value="Spooky">Страшные</option>
+                                <button value="Spooky" className="px-2 mx-2 border rounded-lg hover:bg-gray-50">Страшные</button>
 
-                                <option value="Christmas">Рождественские</option>
+                                <button value="Christmas" className="px-2 mx-2 border rounded-lg hover:bg-gray-50">Рождественские</button>
 
-                            </select>
+                            </div>
 
                         </div>
 
-                        <div className="flex">
-                            <label id="flags">Флаги для черного списка (опционально):</label>
+                        <div className="flex my-6 gap-x-4 items-center">
+                            <label id="flags">Черный список:</label>
 
                             <div id="flags" className="flex">
 
-                                <label><input type="checkbox" id="nsfw"/> NSFW</label><br/>
+                                <button className="px-2 mx-2 border rounded-lg hover:bg-gray-50" id="nsfw"> NSFW</button>
 
-                                <label><input type="checkbox" id="religious"/> Религиозные</label><br/>
+                                <button className="px-2 mx-2 border rounded-lg hover:bg-gray-50" id="religious"> Религиозные</button>
 
-                                <label><input type="checkbox" id="political"/> Политические</label><br/>
+                                <button className="px-2 mx-2 border rounded-lg hover:bg-gray-50" id="political"> Политические</button>
 
-                                <label><input type="checkbox" id="racist"/> Расистские</label><br/>
+                                <button className="px-2 mx-2 border rounded-lg hover:bg-gray-50" id="racist"> Расистские</button>
 
-                                <label><input type="checkbox" id="sexist"/> Сексистские</label><br/>
+                                <button className="px-2 mx-2 border rounded-lg hover:bg-gray-50" id="sexist"> Сексистские</button>
 
-                                <label><input type="checkbox" id="explicit"/> Эксплицитные</label><br/>
+                                <button className="px-2 mx-2 border rounded-lg hover:bg-gray-50" id="explicit"> Эксплицитные</button>
 
                             </div>
 
@@ -72,7 +72,11 @@ export const HomeFilters = () => {
                             <div>Выберите хотя бы один тип шутки:</div>
 
                             {/*todo:добавить стилизацию по примеру из singel*/}
-                            <button className="px-2 py-1 border rounded-lg hover:bg-gray-50 text-sm" onClick={() => onTypeFilter('')}>
+                            <button 
+                                className={clsx('px-2 py-1 border rounded-lg hover:bg-gray-50 text-sm', {
+                                    'border-blue-700 bg-blue-100 hover:bg-blue-200': getCriteria('type') === 'any'
+                                })}
+                                onClick={() => onTypeFilter('any')}>
                                 Все
                             </button>
 
@@ -94,33 +98,33 @@ export const HomeFilters = () => {
                                 Двойные
                             </button>
 
-                            {/*<label><input type="checkbox" id="single"/>одиночная</label>*/}
+                            {/*<label><input className="" id="single"/>одиночная</label>*/}
 
-                            {/*<label><input type="checkbox" id="twopart"/>двойная</label>*/}
+                            {/*<label><input className="" id="twopart"/>двойная</label>*/}
 
 
                         </div>
 
-                        <div className="flex">
+                        <div className="flex items-center">
 
                             <label>Найдите шутку, которая содержит это слово:</label>
 
-                            <input type="textarea" className="border"/>
+                            <input type="textarea" className="border rounded-md my-2 mx-4"/>
 
                         </div>
 
-                        <div className="flex">
+                        <div className="flex my-4">
 
-                            <label id="">Поиск шутки в диапазоне</label>
+                            <label id="" className="mr-4">Поиск шутки в диапазоне:</label>
                             <p>От</p>
-                            <input type="number" className=" border " />
+                            <input type="number" className=" border rounded-md mx-4 " min={1}/>
                             <p>До</p>
-                            <input type="number" className=" border " />
+                            <input type="number" className=" border rounded-md mx-4 " max={1367}/>
 
                         </div>
 
                         <label id="">Количество шуток</label>
-                        <input type="number" min="1"/>
+                        <input type="number" min={10} max={1367} className="mx-4 border rounded-md"/>
 
                         
 
