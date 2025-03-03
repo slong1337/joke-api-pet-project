@@ -1,6 +1,4 @@
 import { ClientLoaderFunctionArgs } from '@remix-run/server-runtime/dist/routeModules'
-import { useState } from 'react';
-
 
 export type JokeBase = {
     category: string
@@ -29,36 +27,40 @@ export type TwoPartJoke = JokeBase & {
 }
 
 export type Jokes = {
-    error: boolean
+    error: false
     amount: number
     jokes: SingleJoke[] | TwoPartJoke[]
 }
 
-const [selectedCategory, setSelectedCategory] = useState<string>('Any')
-const baseUrl = `https://v2.jokeapi.dev/joke/${selectedCategory}`;
+export type JokesError = {
+    error: true
+    internalError: boolean
+    code: number
+    message: string
+    causedBy: Array<string>
+    additionalInfo: string
+    timestamp: number
+}
 
-
-
-export const clientLoader = async ({request} : ClientLoaderFunctionArgs): Promise<Jokes | undefined> => {
+export const clientLoader = async ({request} : ClientLoaderFunctionArgs): Promise<Jokes | JokesError | undefined> => {
     const url = new URL(request.url)
 
+    // Из строки url мы берем все параметры поиска и записываем их в const searchParams
     const searchParams = new URLSearchParams()
     for (const [key, value] of url.searchParams.entries()) {
         searchParams.append(key, value)
     }
 
-// Создаем копию параметров
-    const params = new URLSearchParams(searchParams);
+    searchParams.append('amount', '10')
 
-// Удаляем amount, если он есть (чтобы избежать дублирования)
-    params.delete("amount");
+    const category = searchParams.get('category')
+    searchParams.delete('category')
 
-// Добавляем amount в конец
-    params.append("amount", "10");
+    const baseUrl = `https://v2.jokeapi.dev/joke/${category}?`
 
-    const res = await fetch(`${baseUrl}?${params.toString()}`, {
+    const res = await fetch(`${baseUrl}${searchParams.toString()}`, {
          headers: { 'Accept': 'application/json'}
     })
 
-    return await res.json() as Jokes
+    return await res.json()
 }

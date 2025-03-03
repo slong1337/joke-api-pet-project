@@ -1,15 +1,8 @@
-import { useLoaderData } from "@remix-run/react"
-import { JokeCard } from '@/scopes/App-Home/components/JokeCard/JokeCard'
 import useCriteria from '@/hooks/useCriteria'
 import clsx from 'clsx'
-import { clientLoader } from '@/scopes/App-Home/leaves/Home.loader'
-import { useState } from "react"
 
 export const HomeFilters = () => {
     const { setCriteria, resetCriteria, getCriteria } = useCriteria()
-    const [selectedCategory, setSelectedCategory] = useState<string>('Any')
-    const data = useLoaderData<typeof clientLoader>()
-
 
     const onTypeFilter = (value: string) => {
         if (value === '') {
@@ -26,7 +19,6 @@ export const HomeFilters = () => {
             setCriteria('category', value)
         }
     }
-
 
     return (
         <>
@@ -91,9 +83,9 @@ export const HomeFilters = () => {
 
                             <button 
                                 className={clsx('px-2 py-1 border rounded-lg hover:bg-gray-50 text-sm', {
-                                    'border-blue-700 bg-blue-100 hover:bg-blue-200': getCriteria('type') === 'any'
+                                    'border-blue-700 bg-blue-100 hover:bg-blue-200': !getCriteria('type')
                                 })}
-                                onClick={() => onTypeFilter('any')}>
+                                onClick={() => onTypeFilter('')}>
                                 Все
                             </button>
 
@@ -130,18 +122,18 @@ export const HomeFilters = () => {
 
                         </div>
 
-                        <div className="flex my-4">
+                        {/*<div className="flex my-4">*/}
 
-                            <label id="" className="mr-4">Поиск шутки в диапазоне:</label>
-                            <p>От</p>
-                            <input type="number" className=" border rounded-md mx-4 " min={1}/>
-                            <p>До</p>
-                            <input type="number" className=" border rounded-md mx-4 " max={1367}/>
+                        {/*    <label id="" className="mr-4">Поиск шутки в диапазоне:</label>*/}
+                        {/*    <p>От</p>*/}
+                        {/*    <input type="number" className=" border rounded-md mx-4 " min={1}/>*/}
+                        {/*    <p>До</p>*/}
+                        {/*    <input type="number" className=" border rounded-md mx-4 " max={1367}/>*/}
 
-                        </div>
+                        {/*</div>*/}
 
-                        <label id="">Количество шуток</label>
-                        <input type="number" min={10} max={1367} className="mx-4 border rounded-md"/>
+                        {/*<label id="">Количество шуток</label>*/}
+                        {/*<input type="number" min={10} max={1367} className="mx-4 border rounded-md"/>*/}
 
                         
 
@@ -150,9 +142,7 @@ export const HomeFilters = () => {
                 </div>
             </div>
 
-            {data && (
-                <JokeCard data={data}/>
-            )}
+
         </>
     )
 }
