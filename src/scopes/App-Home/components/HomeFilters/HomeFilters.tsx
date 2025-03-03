@@ -61,17 +61,21 @@ export const HomeFilters = () => {
 
                             <div id="category" className='flex gap-x-4' >
 
-                                <FilterChips/>
+                                {/* todo: Переделать все фильтры с помощью компонента FilterChips */}
 
-                                <button value="Misc" className={clsx('px-2 py-1 border rounded-lg hover:bg-gray-50 text-sm', {
-                                    'border-blue-700 bg-blue-100 hover:bg-blue-200': getCriteria('category') === 'Any'
-                                })}
-                                onClick={() => onCategoryFilter ('Any')}>Без разницы</button>
+                                <FilterChips 
+                                    placeholder='Без разницы' 
+                                    criteriaValue='Any' 
+                                    onClick={() => onCategoryFilter('Any')} 
+                                    criteriaKey='category'
+                                />
 
-                                <button value="Programming" className={clsx('px-2 py-1 border rounded-lg hover:bg-gray-50 text-sm', {
-                                    'border-blue-700 bg-blue-100 hover:bg-blue-200': getCriteria('category') === 'Programming'
-                                })}
-                                onClick={() => onCategoryFilter ('Programming')}>Программирование</button>
+                                <FilterChips 
+                                    placeholder='Программирование' 
+                                    criteriaValue='Programming' 
+                                    onClick={() => onCategoryFilter('Programming')} 
+                                    criteriaKey='category' 
+                                />
 
                                 <button value="Misc" className={clsx('px-2 py-1 border rounded-lg hover:bg-gray-50 text-sm', {
                                     'border-blue-700 bg-blue-100 hover:bg-blue-200': getCriteria('category') === 'Miscellaneous'
