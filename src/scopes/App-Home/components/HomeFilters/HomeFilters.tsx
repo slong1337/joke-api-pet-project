@@ -1,5 +1,6 @@
 import useCriteria from '@/hooks/useCriteria'
 import clsx from 'clsx'
+import { useRef } from "react"
 
 export const HomeFilters = () => {
     const { setCriteria, resetCriteria, getCriteria } = useCriteria()
@@ -20,6 +21,27 @@ export const HomeFilters = () => {
         }
     }
 
+    const onSearchFilter = (value: string) => {
+        if (value === '') {
+            resetCriteria('contains')
+        } else {
+            setCriteria('contains', value)
+        }
+    }
+
+    const inputRef = useRef<HTMLInputElement | null>(null)
+    
+    const handleInputChange = () => {
+        const value = inputRef.current?.value || ''
+        onSearchFilter(value)
+    }
+
+    const clearInput = () => {
+        if (inputRef.current) {
+            inputRef.current.value = "" // Очищаем input напрямую
+        }
+    }
+
     return (
         <>
             <div className="border rounded-xl px-4 py-2 mt-6">
@@ -28,24 +50,40 @@ export const HomeFilters = () => {
                 <div>
                     <div className="">
                         <div className="flex my-6 gap-x-4 items-center">
+
                             <label id="category">Выберите категорию / категории:</label>
 
-                            <div id="category" >
+                            <div id="category" className='flex gap-x-4' >
 
-                                <button value="Misc" className="px-2 mx-2 border rounded-lg hover:bg-gray-50">Без разницы</button>
+                                <button value="Misc" className={clsx('px-2 py-1 border rounded-lg hover:bg-gray-50 text-sm', {
+                                    'border-blue-700 bg-blue-100 hover:bg-blue-200': getCriteria('category') === 'Any'
+                                })}
+                                onClick={() => onCategoryFilter ('Any')}>Без разницы</button>
 
                                 <button value="Programming" className={clsx('px-2 py-1 border rounded-lg hover:bg-gray-50 text-sm', {
                                     'border-blue-700 bg-blue-100 hover:bg-blue-200': getCriteria('category') === 'Programming'
                                 })}
                                 onClick={() => onCategoryFilter ('Programming')}>Программирование</button>
 
-                                <button value="Misc" className="px-2 mx-2 border rounded-lg hover:bg-gray-50">Разное</button>
+                                <button value="Misc" className={clsx('px-2 py-1 border rounded-lg hover:bg-gray-50 text-sm', {
+                                    'border-blue-700 bg-blue-100 hover:bg-blue-200': getCriteria('category') === 'Miscellaneous'
+                                })}
+                                onClick={() => onCategoryFilter ('Miscellaneous')}>Разное</button>
 
-                                <button value="Dark" className="px-2 mx-2 border rounded-lg hover:bg-gray-50">Тёмный юмор</button>
+                                <button value="Dark" className={clsx('px-2 py-1 border rounded-lg hover:bg-gray-50 text-sm', {
+                                    'border-blue-700 bg-blue-100 hover:bg-blue-200': getCriteria('category') === 'Dark'
+                                })}
+                                onClick={() => onCategoryFilter ('Dark')}>Тёмный юмор</button>
 
-                                <button value="Pun" className="px-2 mx-2 border rounded-lg hover:bg-gray-50">Игра слов</button>
+                                <button value="Pun" className={clsx('px-2 py-1 border rounded-lg hover:bg-gray-50 text-sm', {
+                                    'border-blue-700 bg-blue-100 hover:bg-blue-200': getCriteria('category') === 'Pun'
+                                })}
+                                onClick={() => onCategoryFilter ('Pun')}>Игра слов</button>
 
-                                <button value="Spooky" className="px-2 mx-2 border rounded-lg hover:bg-gray-50">Страшные</button>
+                                <button value="Spooky" className={clsx('px-2 py-1 border rounded-lg hover:bg-gray-50 text-sm', {
+                                    'border-blue-700 bg-blue-100 hover:bg-blue-200': getCriteria('category') === 'Spooky'
+                                })}
+                                onClick={() => onCategoryFilter ('Spooky')}>Страшные</button>
 
                                 <button value="Christmas" className={clsx('px-2 py-1 border rounded-lg hover:bg-gray-50 text-sm', {
                                     'border-blue-700 bg-blue-100 hover:bg-blue-200': getCriteria('category') === 'Christmas'
@@ -59,19 +97,19 @@ export const HomeFilters = () => {
                         <div className="flex my-6 gap-x-4 items-center">
                             <label id="flags">Черный список:</label>
 
-                            <div id="flags" className="flex">
+                            <div id="flags" className="flex gap-x-4">
 
-                                <button className="px-2 mx-2 border rounded-lg hover:bg-gray-50 text-sm" id="nsfw"> NSFW</button>
+                                <button className="px-2  border rounded-lg hover:bg-gray-50 text-sm" id="nsfw"> NSFW</button>
 
-                                <button className="px-2 mx-2 border rounded-lg hover:bg-gray-50 text-sm" id="religious"> Религиозные</button>
+                                <button className="px-2  border rounded-lg hover:bg-gray-50 text-sm" id="religious"> Религиозные</button>
 
-                                <button className="px-2 mx-2 border rounded-lg hover:bg-gray-50 text-sm" id="political"> Политические</button>
+                                <button className="px-2  border rounded-lg hover:bg-gray-50 text-sm" id="political"> Политические</button>
 
-                                <button className="px-2 mx-2 border rounded-lg hover:bg-gray-50 text-sm" id="racist"> Расистские</button>
+                                <button className="px-2  border rounded-lg hover:bg-gray-50 text-sm" id="racist"> Расистские</button>
 
-                                <button className="px-2 mx-2 border rounded-lg hover:bg-gray-50 text-sm" id="sexist"> Сексистские</button>
+                                <button className="px-2  border rounded-lg hover:bg-gray-50 text-sm" id="sexist"> Сексистские</button>
 
-                                <button className="px-2 mx-2 border rounded-lg hover:bg-gray-50 text-sm" id="explicit"> Эксплицитные</button>
+                                <button className="px-2 border rounded-lg hover:bg-gray-50 text-sm" id="explicit"> Эксплицитные</button>
 
                             </div>
 
@@ -118,7 +156,23 @@ export const HomeFilters = () => {
 
                             <label>Найдите шутку, которая содержит это слово:</label>
 
-                            <input type="textarea" className="border rounded-md my-2 mx-4"/>
+                            <input 
+                                type="text"
+                                ref={inputRef} // Привязываем input к useRef
+                                //onChange={handleInputChange} // Вызываем функцию при изменении
+                                className="px-2 py-1 border-2 rounded-lg hover:bg-gray-50 text-sm"/>
+
+                            <button className='px-2 py-1 border  rounded-xl hover:bg-gray-50 text-sm'
+                                onClick={handleInputChange}>Поиск
+                            </button>
+
+                            <button className='px-2 py-1 border  rounded-xl hover:bg-gray-50 text-sm'
+                                onClick={() => {
+                                    clearInput()
+                                    handleInputChange()
+                                }}>Очистить
+                            </button>
+                                
 
                         </div>
 
