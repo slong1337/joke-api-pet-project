@@ -1,6 +1,8 @@
 import useCriteria from '@/hooks/useCriteria'
 import clsx from 'clsx'
 import { useRef } from "react"
+import { CloseIcon } from '@/components/icons/CloseIcon'
+import { FilterChips } from '@/scopes/App-Home/components/FilterChips/FilterChips'
 
 export const HomeFilters = () => {
     const { setCriteria, resetCriteria, getCriteria } = useCriteria()
@@ -22,23 +24,27 @@ export const HomeFilters = () => {
     }
 
     const onSearchFilter = (value: string) => {
-        if (value === '') {
-            resetCriteria('contains')
-        } else {
+        if (value) {
             setCriteria('contains', value)
+        } else {
+            resetCriteria('contains')
         }
     }
 
-    const inputRef = useRef<HTMLInputElement | null>(null)
+    const searchRef = useRef<HTMLInputElement | null>(null)
     
     const handleInputChange = () => {
-        const value = inputRef.current?.value || ''
+        const value = searchRef.current?.value || getCriteria('contains') || ''
+
         onSearchFilter(value)
     }
 
     const clearInput = () => {
-        if (inputRef.current) {
-            inputRef.current.value = "" // Очищаем input напрямую
+        if (getCriteria('contains')) {
+            resetCriteria('contains')
+            if (searchRef.current) {
+                searchRef.current.value = ''
+            }
         }
     }
 
@@ -54,6 +60,8 @@ export const HomeFilters = () => {
                             <label id="category">Выберите категорию / категории:</label>
 
                             <div id="category" className='flex gap-x-4' >
+
+                                <FilterChips/>
 
                                 <button value="Misc" className={clsx('px-2 py-1 border rounded-lg hover:bg-gray-50 text-sm', {
                                     'border-blue-700 bg-blue-100 hover:bg-blue-200': getCriteria('category') === 'Any'
@@ -152,28 +160,33 @@ export const HomeFilters = () => {
 
                         </div>
 
-                        <div className="flex items-center">
+                        <div className="flex items-center gap-x-2">
 
-                            <label>Найдите шутку, которая содержит это слово:</label>
+                            {/*<label>Найдите шутку, которая содержит это слово:</label>*/}
 
-                            <input 
-                                type="text"
-                                ref={inputRef} // Привязываем input к useRef
-                                //onChange={handleInputChange} // Вызываем функцию при изменении
-                                className="px-2 py-1 border-2 rounded-lg hover:bg-gray-50 text-sm"/>
+                            <div className="relative">
+                                {/*todo: Добавь лупу*/}
 
-                            <button className='px-2 py-1 border  rounded-xl hover:bg-gray-50 text-sm'
-                                onClick={handleInputChange}>Поиск
+                                {/*todo: Когда есть критерия поиска, цвет обводки синий, по примеру с другими фильтрами*/}
+                                <input
+                                    type="text"
+                                    ref={searchRef}
+                                    placeholder={'Поиск...'}
+                                    className="px-2 py-1 border-2 rounded-lg hover:bg-gray-50 text-sm pl-10"
+                                    defaultValue={getCriteria('contains') || searchRef.current?.value}
+                                />
+
+
+                                {getCriteria('contains') && (
+                                    <button className="p-1 absolute top-1 right-1" onClick={clearInput}>
+                                        <CloseIcon/>
+                                    </button>
+                                )}
+
+                            </div>
+                            <button className="px-2 py-1 border  rounded-xl hover:bg-gray-50 text-sm"
+                                    onClick={handleInputChange}>Поиск
                             </button>
-
-                            <button className='px-2 py-1 border  rounded-xl hover:bg-gray-50 text-sm'
-                                onClick={() => {
-                                    clearInput()
-                                    handleInputChange()
-                                }}>Очистить
-                            </button>
-                                
-
                         </div>
 
                         {/*<div className="flex my-4">*/}
