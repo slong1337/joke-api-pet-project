@@ -1,4 +1,6 @@
 import { ClientLoaderFunctionArgs } from '@remix-run/server-runtime/dist/routeModules'
+import { useState } from 'react';
+
 
 export type JokeBase = {
     category: string
@@ -32,6 +34,11 @@ export type Jokes = {
     jokes: SingleJoke[] | TwoPartJoke[]
 }
 
+const [selectedCategory, setSelectedCategory] = useState<string>('Any')
+const baseUrl = `https://v2.jokeapi.dev/joke/${selectedCategory}`;
+
+
+
 export const clientLoader = async ({request} : ClientLoaderFunctionArgs): Promise<Jokes | undefined> => {
     const url = new URL(request.url)
 
@@ -40,7 +47,16 @@ export const clientLoader = async ({request} : ClientLoaderFunctionArgs): Promis
         searchParams.append(key, value)
     }
 
-    const res = await fetch(`https://v2.jokeapi.dev/joke/Any?amount=10&${searchParams.toString()}`, {
+// Создаем копию параметров
+    const params = new URLSearchParams(searchParams);
+
+// Удаляем amount, если он есть (чтобы избежать дублирования)
+    params.delete("amount");
+
+// Добавляем amount в конец
+    params.append("amount", "10");
+
+    const res = await fetch(`${baseUrl}?${params.toString()}`, {
          headers: { 'Accept': 'application/json'}
     })
 

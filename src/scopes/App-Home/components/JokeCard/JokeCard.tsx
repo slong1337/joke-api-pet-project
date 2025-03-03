@@ -1,5 +1,6 @@
 
 import { Jokes } from '@/scopes/App-Home/leaves/Home.loader'
+import { it } from 'node:test'
 
 export type JokeCardProps = {
     data: Jokes
@@ -14,9 +15,9 @@ export const JokeCard = (props: JokeCardProps) => {
                 {data.jokes.map((item, i) => (
                     <p className="mb-4">
                         {item.type === 'single' ? (
-                            <>{item.joke}</>
+                            <>{item.joke} {item.category}</>
                         ) : (
-                            <>- {item.setup} <br/> - {item.delivery}</>
+                            <>- {item.setup} <br/> - {item.delivery} {item.category}</>
                         )}
                     </p>
                 ))}
