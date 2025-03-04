@@ -1,12 +1,37 @@
 import useCriteria from '@/hooks/useCriteria'
 import clsx from 'clsx'
-import { useRef } from "react"
+import { useEffect, useRef } from "react"
 import { CloseIcon } from '@/components/icons/CloseIcon'
 import { FilterChips } from '@/scopes/App-Home/components/FilterChips/FilterChips'
 import { SearchIcon } from '@/components/SearchIcon'
+import { useNavigate } from '@remix-run/react'
+import { useSearchParams } from 'react-router-dom'
 
 export const HomeFilters = () => {
     const { setCriteria, resetCriteria, getCriteria } = useCriteria()
+    const [searchParams] = useSearchParams()
+
+    const navigate = useNavigate()
+
+    //Задаем стартовое значения searchParams: category=Any и type=any
+    useEffect(() => {
+        console.log('render')
+        const newSearchParams = new URLSearchParams(searchParams)
+        let updated = false
+
+        if (!newSearchParams.has('category')) {
+            newSearchParams.set('category', 'Any')
+            updated = true
+        }
+        if (!newSearchParams.has('type')) {
+            newSearchParams.set('type', 'any')
+            updated = true
+        }
+
+        if (updated) {
+            navigate(`?${newSearchParams.toString()}`, { replace: true })
+        }
+    }, [navigate])
 
     const onTypeFilter = (value: string) => {
         if (value === '') {
@@ -59,7 +84,7 @@ export const HomeFilters = () => {
 
                         <div className="flex my-6 gap-x-4 items-center">
 
-                            <label id="category">Выберите категорию / категории:</label>
+                            <p id="category">Выберите категорию / категории:</p>
 
                             <div id="category" className='flex gap-x-4' >
 
@@ -118,7 +143,7 @@ export const HomeFilters = () => {
 
                         <div className="flex my-6 gap-x-4 items-center">
                             
-                            <label id="flags">Черный список:</label>
+                            <p id="flags">Черный список:</p>
 
                             <div id="flags" className="flex gap-x-4">
 
@@ -151,9 +176,9 @@ export const HomeFilters = () => {
 
                             <button 
                                 className={clsx('px-2 py-1 border rounded-lg hover:bg-gray-50 text-sm', {
-                                    'border-blue-700 bg-blue-100 hover:bg-blue-200': !getCriteria('type')
+                                    'border-blue-700 bg-blue-100 hover:bg-blue-200': getCriteria('type') === 'any'
                                 })}
-                                onClick={() => onTypeFilter('')}>
+                                onClick={() => onTypeFilter('any')}>
                                 Все
                             </button>
 
