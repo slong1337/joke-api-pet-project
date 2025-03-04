@@ -15,6 +15,7 @@ export const FilterChips = (props: FilterChipsProps) => {
 
     const { getCriteria } = useCriteria()
 
+
     return (
         <button
             className={clsx(className,'px-2 py-1 border rounded-lg hover:bg-gray-50 text-sm', {
