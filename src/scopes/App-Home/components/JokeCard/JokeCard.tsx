@@ -9,24 +9,29 @@ export const JokeCard = (props: JokeCardProps) => {
     return (
         <>
             {!data.error ? (
-                <div className="border rounded-xl mt-6 px-6 py-4">
+                <div className="mt-6 max-w-3xl sm:mx-auto px-2">
                     <div className="text-lg">
                         {data.jokes.map((item) => (
-                            <p className="mb-4" key={item.id}>
+                            <p className="mb-4 my-6 mx-auto" key={item.id}>
                                 {item.type === 'single' ? (
-                                    <>{item.joke} {item.category}</>
+                                    <>{item.joke}</>
                                 ) : (
-                                    <>- {item.setup} <br/> - {item.delivery} {item.category}</>
+                                    <div className="space-y-2 rounded">
+                                        <p>- {item.setup}</p>
+                                        <p>- {item.delivery}</p>
+                                    </div>
                                 )}
                             </p>
                         ))}
                     </div>
                 </div>
             ) : (
-                <div className="border rounded-xl mt-6 px-6 py-4">
-                    <p className="text-lg text-red-600">
-                        Error: {data.message}
-                    </p>
+                <div className='border rounded-t-lg bg-red-100 mt-2'>
+                    <div className="my-4 px-4 py-4 mx-auto max-w-3xl flex justify-center">
+                        <p className="text-lg text-red-600">
+                            Ошибка: {data.message}
+                        </p>
+                    </div>
                 </div>
             )}
         </>
