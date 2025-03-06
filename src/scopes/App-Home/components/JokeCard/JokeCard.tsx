@@ -14,11 +14,25 @@ export const JokeCard = (props: JokeCardProps) => {
                         {data.jokes.map((item) => (
                             <p className="mb-4 my-6 mx-auto" key={item.id}>
                                 {item.type === 'single' ? (
-                                    <>{item.joke}</>
+                                    <>{item.joke} 
+                                    <ul>
+                                    {Object.entries(item.flags).map(([key, value]) => (
+                                        <li key={key}>
+                                        {key}: {value ? '✅' : '❌'}
+                                        </li>
+                                    ))}
+                                    </ul></>
                                 ) : (
                                     <div className="space-y-2 rounded">
                                         <p>- {item.setup}</p>
-                                        <p>- {item.delivery}</p>
+                                        <p>- {item.delivery} 
+                                            <ul>
+                                            {Object.entries(item.flags).map(([key, value]) => (
+                                                <li key={key}>
+                                                {key}: {value ? '✅' : '❌'}
+                                                </li>
+                                            ))}
+                                            </ul></p>
                                     </div>
                                 )}
                             </p>

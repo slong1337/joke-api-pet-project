@@ -6,6 +6,7 @@ import { FilterChips } from '@/scopes/App-Home/components/FilterChips/FilterChip
 import { SearchIcon } from '@/components/icons/SearchIcon'
 import { useNavigate } from '@remix-run/react'
 import { useSearchParams } from 'react-router-dom'
+import { log } from 'node:console'
 
 export const HomeFilters = () => {
     const { setCriteria, resetCriteria, getCriteria } = useCriteria()
@@ -56,6 +57,22 @@ export const HomeFilters = () => {
             resetCriteria('contains')
         }
     }
+    const onBlackListFilter = (value: string) => {
+        const currentBlacklist = checkBlacklist() || '';
+        const updatedBlacklist = currentBlacklist 
+            ? `${currentBlacklist},${value}` 
+            : value;
+    
+        setCriteria('blacklistFlags', updatedBlacklist);
+    };
+
+    const checkBlacklist = () => {
+        const value = (getCriteria('blacklistFlags'))
+        console.log(value)
+        return value
+        
+    }
+
 
     const searchRef = useRef<HTMLInputElement | null>(null)
     
@@ -81,7 +98,6 @@ export const HomeFilters = () => {
 
                 <div className="flex flex-col gap-6">
 
-                    {/* Выбор категории */}
                     <div className="flex flex-wrap items-center gap-4">
                         <p className="font-medium pt-4">Выберите категорию / категории:</p>
 
@@ -131,21 +147,56 @@ export const HomeFilters = () => {
                         </div>
                     </div>
 
-                    {/* Черный список */}
                     <div className="flex flex-wrap gap-4 items-center">
                         <p id="flags-label" className="font-medium">Черный список:</p>
 
                         <div className="flags-container flex flex-wrap gap-2">
-                            <button className="px-2 border rounded-lg hover:bg-gray-100 text-sm ">NSFW</button>
-                            <button className="px-2 border rounded-lg hover:bg-gray-100 text-sm ">Религиозные</button>
-                            <button className="px-2 border rounded-lg hover:bg-gray-100 text-sm ">Политические</button>
-                            <button className="px-2 border rounded-lg hover:bg-gray-100 text-sm ">Расистские</button>
-                            <button className="px-2 border rounded-lg hover:bg-gray-100 text-sm ">Сексистские</button>
-                            <button className="px-2 border rounded-lg hover:bg-gray-100 text-sm ">Эксплицитные</button>
+
+                            <FilterChips 
+                                placeholder="NSFW" 
+                                criteriaValue="nsfw" 
+                                onClick={() => {checkBlacklist() ? onBlackListFilter("nsfw") : resetCriteria('blacklistFlags')}} 
+                                criteriaKey="blacklistFlags"
+                            />
+
+                            <FilterChips 
+                                placeholder="Религиозные" 
+                                criteriaValue="religious" 
+                                onClick={() => {checkBlacklist() ? onBlackListFilter("religious") : resetCriteria('blacklistFlags')}} 
+                                criteriaKey="blacklistFlags"
+                            />
+
+                            <FilterChips 
+                                placeholder="Политические" 
+                                criteriaValue="political" 
+                                onClick={() => onBlackListFilter("political")} 
+                                criteriaKey="blacklistFlags"
+                            />
+
+                            <FilterChips 
+                                placeholder="Расистские" 
+                                criteriaValue="racist" 
+                                onClick={() => onBlackListFilter("racist")} 
+                                criteriaKey="blacklistFlags"
+                            />
+
+                            <FilterChips 
+                                placeholder="Сексистские" 
+                                criteriaValue="sexist" 
+                                onClick={() => onBlackListFilter("sexist")} 
+                                criteriaKey="blacklistFlags"
+                            />
+
+                            <FilterChips 
+                                placeholder="Эксплицитные" 
+                                criteriaValue="explicit" 
+                                onClick={() => onBlackListFilter("explicit")} 
+                                criteriaKey="blacklistFlags"
+                            />
+
                         </div>
                     </div>
 
-                    {/* Выбор типа шутки */}
                     <div className="flex flex-wrap gap-4 items-center">
                         <p className="font-medium">Выберите хотя бы один тип шутки:</p>
 
@@ -169,7 +220,6 @@ export const HomeFilters = () => {
                         />
                     </div>
 
-                    {/* Поле поиска */}
                     <div className="flex items-center gap-2">
                         <div className="relative">
                             <SearchIcon className="w-4 h-4 absolute top-2 left-2 text-black/60"/>
