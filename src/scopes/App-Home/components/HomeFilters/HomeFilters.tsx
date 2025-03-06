@@ -1,22 +1,19 @@
 import useCriteria from '@/hooks/useCriteria'
 import clsx from 'clsx'
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 import { CloseIcon } from '@/components/icons/CloseIcon'
 import { FilterChips } from '@/scopes/App-Home/components/FilterChips/FilterChips'
 import { SearchIcon } from '@/components/icons/SearchIcon'
 import { useNavigate } from '@remix-run/react'
 import { useSearchParams } from 'react-router-dom'
-import { log } from 'node:console'
 
 export const HomeFilters = () => {
     const { setCriteria, resetCriteria, getCriteria } = useCriteria()
     const [searchParams] = useSearchParams()
-
     const navigate = useNavigate()
 
     //Задаем стартовое значения searchParams: category=Any и type=any
     useEffect(() => {
-        console.log('render')
         const newSearchParams = new URLSearchParams(searchParams)
         let updated = false
 
@@ -57,21 +54,33 @@ export const HomeFilters = () => {
             resetCriteria('contains')
         }
     }
-    const onBlackListFilter = (value: string) => {
-        const currentBlacklist = checkBlacklist() || '';
-        const updatedBlacklist = currentBlacklist 
-            ? `${currentBlacklist},${value}` 
-            : value;
-    
-        setCriteria('blacklistFlags', updatedBlacklist);
-    };
 
-    const checkBlacklist = () => {
-        const value = (getCriteria('blacklistFlags'))
-        console.log(value)
-        return value
-        
-    }
+    //todo: Добавь стартовые значения для useState чтобы при открытии ссылки сохранились фильтры
+    const [blackListFilter, setBlackListFilter] = useState<Array<string>>([])
+
+    useEffect(() => {
+        if (blackListFilter.length === 0) {
+            resetCriteria('blacklistFlags')
+        } else {
+            setCriteria('blacklistFlags', blackListFilter.toString())
+        }
+    }, [blackListFilter])
+
+    // const onBlackListFilter = (value: string) => {
+    //     const currentBlacklist = checkBlacklist() || '';
+    //     const updatedBlacklist = currentBlacklist
+    //         ? `${currentBlacklist},${value}`
+    //         : value;
+    //
+    //     setCriteria('blacklistFlags', updatedBlacklist);
+    // };
+    //
+    // const checkBlacklist = () => {
+    //     const value = (getCriteria('blacklistFlags'))
+    //     console.log(value)
+    //     return value
+    //
+    // }
 
 
     const searchRef = useRef<HTMLInputElement | null>(null)
@@ -152,47 +161,68 @@ export const HomeFilters = () => {
 
                         <div className="flags-container flex flex-wrap gap-2">
 
-                            <FilterChips 
-                                placeholder="NSFW" 
-                                criteriaValue="nsfw" 
-                                onClick={() => {checkBlacklist() ? onBlackListFilter("nsfw") : resetCriteria('blacklistFlags')}} 
+                            <FilterChips
+                                placeholder="NSFW"
+                                criteriaValue="nsfw"
+                                onClick={() => {
+                                    setBlackListFilter(prev => prev.includes('nsfw') ? prev.filter(item => item !== 'nsfw') : [...prev, 'nsfw'])
+                                }}
+                                isActive={blackListFilter.includes('nsfw')}
                                 criteriaKey="blacklistFlags"
                             />
 
-                            <FilterChips 
-                                placeholder="Религиозные" 
-                                criteriaValue="religious" 
-                                onClick={() => {checkBlacklist() ? onBlackListFilter("religious") : resetCriteria('blacklistFlags')}} 
+                            <FilterChips
+                                placeholder="Религиозные"
+                                criteriaValue="religious"
+                                onClick={() => {
+                                    setBlackListFilter(prev => prev.includes('religious') ? prev.filter(item => item !== 'religious') : [...prev, 'religious'])
+                                }}
+                                isActive={blackListFilter.includes('religious')}
                                 criteriaKey="blacklistFlags"
                             />
 
-                            <FilterChips 
-                                placeholder="Политические" 
-                                criteriaValue="political" 
-                                onClick={() => onBlackListFilter("political")} 
-                                criteriaKey="blacklistFlags"
-                            />
 
-                            <FilterChips 
-                                placeholder="Расистские" 
-                                criteriaValue="racist" 
-                                onClick={() => onBlackListFilter("racist")} 
-                                criteriaKey="blacklistFlags"
-                            />
+                            {/*<FilterChips */}
+                            {/*    placeholder="NSFW" */}
+                            {/*    criteriaValue="nsfw" */}
+                            {/*    onClick={() => {checkBlacklist() ? onBlackListFilter("nsfw") : resetCriteria('blacklistFlags')}} */}
+                            {/*    criteriaKey="blacklistFlags"*/}
+                            {/*/>*/}
 
-                            <FilterChips 
-                                placeholder="Сексистские" 
-                                criteriaValue="sexist" 
-                                onClick={() => onBlackListFilter("sexist")} 
-                                criteriaKey="blacklistFlags"
-                            />
+                            {/*<FilterChips */}
+                            {/*    placeholder="Религиозные" */}
+                            {/*    criteriaValue="religious" */}
+                            {/*    onClick={() => {checkBlacklist() ? onBlackListFilter("religious") : resetCriteria('blacklistFlags')}} */}
+                            {/*    criteriaKey="blacklistFlags"*/}
+                            {/*/>*/}
 
-                            <FilterChips 
-                                placeholder="Эксплицитные" 
-                                criteriaValue="explicit" 
-                                onClick={() => onBlackListFilter("explicit")} 
-                                criteriaKey="blacklistFlags"
-                            />
+                            {/*<FilterChips */}
+                            {/*    placeholder="Политические" */}
+                            {/*    criteriaValue="political" */}
+                            {/*    onClick={() => onBlackListFilter("political")} */}
+                            {/*    criteriaKey="blacklistFlags"*/}
+                            {/*/>*/}
+
+                            {/*<FilterChips */}
+                            {/*    placeholder="Расистские" */}
+                            {/*    criteriaValue="racist" */}
+                            {/*    onClick={() => onBlackListFilter("racist")} */}
+                            {/*    criteriaKey="blacklistFlags"*/}
+                            {/*/>*/}
+
+                            {/*<FilterChips */}
+                            {/*    placeholder="Сексистские" */}
+                            {/*    criteriaValue="sexist" */}
+                            {/*    onClick={() => onBlackListFilter("sexist")} */}
+                            {/*    criteriaKey="blacklistFlags"*/}
+                            {/*/>*/}
+
+                            {/*<FilterChips */}
+                            {/*    placeholder="Эксплицитные" */}
+                            {/*    criteriaValue="explicit" */}
+                            {/*    onClick={() => onBlackListFilter("explicit")} */}
+                            {/*    criteriaKey="blacklistFlags"*/}
+                            {/*/>*/}
 
                         </div>
                     </div>

@@ -8,10 +8,11 @@ export type FilterChipsProps = {
     criteriaKey: string
     onClick: () => void
     className?: string
+    isActive?: boolean
 }
 
 export const FilterChips = (props: FilterChipsProps) => {
-    const { placeholder, criteriaValue, onClick, className, criteriaKey } = props
+    const { placeholder, criteriaValue, onClick, className, criteriaKey, isActive } = props
 
     const { getCriteria } = useCriteria()
 
@@ -19,7 +20,7 @@ export const FilterChips = (props: FilterChipsProps) => {
     return (
         <button
             className={clsx(className,'px-2 py-1 border rounded-lg hover:bg-gray-50 text-sm', {
-                'border-blue-700 bg-blue-100 hover:!bg-blue-200': getCriteria(criteriaKey) === criteriaValue
+                'border-blue-700 bg-blue-100 hover:!bg-blue-200': getCriteria(criteriaKey) === criteriaValue || isActive
             })}
             onClick={onClick}
         >

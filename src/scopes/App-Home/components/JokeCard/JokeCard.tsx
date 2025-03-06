@@ -12,7 +12,7 @@ export const JokeCard = (props: JokeCardProps) => {
                 <div className="mt-6 max-w-3xl sm:mx-auto px-2">
                     <div className="text-lg">
                         {data.jokes.map((item) => (
-                            <p className="mb-4 my-6 mx-auto" key={item.id}>
+                            <p className="mb-4 my-6 mx-auto" key={item.id}> {/*todo: почему внутри p появился список и div ???*/}
                                 {item.type === 'single' ? (
                                     <>{item.joke} 
                                     <ul>
