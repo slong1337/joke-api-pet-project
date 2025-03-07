@@ -4,40 +4,41 @@ export type JokeCardProps = {
     data: Jokes | JokesError
 }
 
+
+const JokeFlags = (item: { flags: Record<string, boolean> }) => {
+    return (
+      <ul>
+        {Object.entries(item.flags).map(([key, value]) => (
+          <li key={key}>
+            {key}: {value ? '✅' : '❌'}
+          </li>
+        ))}
+      </ul>
+    );
+  };
+
 export const JokeCard = (props: JokeCardProps) => {
     const { data } = props
     return (
         <>
             {!data.error ? (
-                <div className="mt-6 max-w-3xl sm:mx-auto px-2">
-                    <div className="text-lg">
-                        {data.jokes.map((item) => (
-                            <p className="mb-4 my-6 mx-auto" key={item.id}> {/*todo: почему внутри p появился список и div ???*/}
-                                {item.type === 'single' ? (
-                                    <>{item.joke} 
-                                    <ul>
-                                    {Object.entries(item.flags).map(([key, value]) => (
-                                        <li key={key}>
-                                        {key}: {value ? '✅' : '❌'}
-                                        </li>
-                                    ))}
-                                    </ul></>
-                                ) : (
-                                    <div className="space-y-2 rounded">
-                                        <p>- {item.setup}</p>
-                                        <p>- {item.delivery} 
-                                            <ul>
-                                            {Object.entries(item.flags).map(([key, value]) => (
-                                                <li key={key}>
-                                                {key}: {value ? '✅' : '❌'}
-                                                </li>
-                                            ))}
-                                            </ul></p>
-                                    </div>
-                                )}
-                            </p>
-                        ))}
-                    </div>
+                <div className="mt-6 max-w-3xl sm:mx-auto px-2 text-lg">
+                    {data.jokes.map((item) => (
+                        <div className="mb-4 my-6 mx-auto" key={item.id}> 
+                            {item.type === 'single' ? (
+                            <>
+                                <p>{item.joke}</p>
+                                 <JokeFlags flags={item.flags} />
+                            </>
+                            ) : (
+                                <div className="space-y-2 rounded">
+                                    <p>- {item.setup}</p>
+                                    <p>- {item.delivery}</p>
+                                    <JokeFlags flags={item.flags} />
+                                </div>
+                            )}
+                        </div>
+                    ))}
                 </div>
             ) : (
                 <div className='border rounded-t-lg bg-red-100 mt-2'>
